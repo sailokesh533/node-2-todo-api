@@ -25,6 +25,7 @@ var newEmployee = new Employee({
 
 newEmployee.save().then((doc)=>{
 res.send(doc);
+console.log('Employee data saved in database');
 },(e)=>{
   res.status(400).send(e);
   console.log('Unable to save record in database');
@@ -56,6 +57,13 @@ app.post('/users',(req,res)=>{
   });
 });
 
+app.get('/users',(req,res)=>{
+  Users.find().then((doc)=>{
+    res.send({doc});
+  },(e)=>{
+    res.status(400).send(e);
+  })
+});
 
 
 

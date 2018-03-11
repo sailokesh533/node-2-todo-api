@@ -4,8 +4,19 @@ var request = require('supertest');
 var {app} = require('./../server');
 var {Users} = require('./../models/users');
 
+const user_objects = [
+  {
+    user_name:'Sai Lokesh',
+    user_id:2
+  },{
+    user_name:'Kanthi Shree',
+    user_id:5
+  }
+]
 beforeEach((done)=>{
-  Users.remove({}).then(()=>done());
+  Users.remove({}).then(()=>{
+    return Users.insertMany(user_objects);
+  }).then(()=>done());
 });
 
 
@@ -25,11 +36,10 @@ it('should test user data',(done)=>{
       return done(err);
     }
     Users.find().then((user)=>{
-      expect(user.length).toBe(1);
-      expect(user[0].user_id).toBe(1);
+      expect(user.length).toBe(3);
+      expect(user[1].user_id).toBe(5);
      done();
     }).catch((err)=>done(err));
   })
 });
-
 });

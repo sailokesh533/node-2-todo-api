@@ -53,22 +53,36 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp',(err,db)=>{
 
 //Insert multiple records
 
-db.collection('Users').insertMany([
+// db.collection('Users').insertMany([
+//   {
+//   'name':'Kinnu',
+//   age:28,
+//   'location':'Visakhapatnam'
+// },
+// {
+//   'name':'Jyothi',
+//   age:26,
+//   'location':'vijaynagaram'
+// }
+// ]).then((docs)=>{
+// console.log(JSON.stringify(docs,undefined,2));
+// },(err)=>{
+//   console.log('Unable to insert multiple records in db');
+// });
+
+db.collection('Employee').insertMany([
   {
-  'name':'Kinnu',
-  age:28,
-  'location':'Visakhapatnam'
+emp_name:'sai'
 },
 {
-  'name':'Jyothi',
-  age:26,
-  'location':'vijaynagaram'
+  emp_name:'Lokesh'
 }
 ]).then((docs)=>{
 console.log(JSON.stringify(docs,undefined,2));
 },(err)=>{
   console.log('Unable to insert multiple records in db');
 });
+
 
 
   db.close();

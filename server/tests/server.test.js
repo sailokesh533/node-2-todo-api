@@ -4,8 +4,20 @@ var request =  require('supertest');
 var {app} = require('./../server');
 var {Employee} = require('./../models/employee');
 
+const emp_objects =[{
+  emp_name:'Sai Lokesh'
+},{
+  emp_name:'Kanthi Shree'
+},{
+  emp_name:'Kinnu'
+},{
+  emp_name:'Vani'
+}];
+
 beforeEach((done)=>{
-  Employee.remove({}).then(()=>done());
+Employee.remove({}).then(()=>{
+  return Employee.insertMany(emp_objects);
+}).catch(()=>done());
 });
 
 describe('/Post employee',()=>{
