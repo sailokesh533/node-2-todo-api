@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 //Local Imports
 var {mongoose} = require('./db/mongoose');
 var {Employee} = require('./models/employee');
-
+var {Users} = require('./models/users');
 
 var app = express();
 
@@ -17,10 +17,10 @@ app.use(bodyParser.json());
 
 app.post('/employee',(req,res)=>{
 var newEmployee = new Employee({
-  emp_name:req.body.emp_name,
-  age:req.body.age,
-  address:req.body.address,
-  email_id:req.body.email_id
+  emp_name:req.body.emp_name
+  // age:req.body.age,
+  // address:req.body.address,
+  // email_id:req.body.email_id
 });
 
 newEmployee.save().then((doc)=>{
@@ -32,7 +32,28 @@ res.send(doc);
 
 });
 
+
+app.post('/users',(req,res)=>{
+  var user = new Users({
+    user_name:req.body.user_name,
+    user_id:req.body.user_id
+  });
+
+  user.save().then((doc1)=>{
+    res.send(doc1);
+    console.log('Record is saved in database');
+  },(err)=>{
+    res.status(400).send(err);
+    console.log('Unable to save user data');
+  });
+});
+
+
+
+
 //Setup listen port
 app.listen(3000,()=>{
   console.log('Server is up on port number 3000');
-})
+});
+
+module.exports = {app};

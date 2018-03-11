@@ -5,20 +5,21 @@ emp_name:{
   required:true,
   minlength:6,
   trim:true
-},
+}
+,
 age:{
   type:Number,
-  required:true,
+  required:false,
   trim:true
 },
 address:{
   type:String,
-  required:true,
+  required:false,
   minlength:1
 },
 email_id:{
   type:String,
-  required:true,
+  required:false,
   trim:true
 }
 });
