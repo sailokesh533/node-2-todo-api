@@ -6,7 +6,7 @@ const {Users} = require('./../server/models/users');
 var id = '5aa4da62da184dc838107685';
 var user_name ='Sai Lokesh';
 
-if(!ObjectID.isValid){
+if(!ObjectID.isValid(id)){
   console.log('User id not found');
 }
 Users.find({

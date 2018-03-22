@@ -1,13 +1,17 @@
 //Outside Imports
 var express =  require('express');
 var bodyParser = require('body-parser');
+const {ObjectID} = require('mongodb');
 
 //Local Imports
 var {mongoose} = require('./db/mongoose');
 var {Employee} = require('./models/employee');
 var {Users} = require('./models/users');
 
+
 var app = express();
+
+const port = process.env.PORT || 3000;
 
 //Middleware setup
 
@@ -65,11 +69,46 @@ app.get('/users',(req,res)=>{
   })
 });
 
+//Getting user details based on id
+
+app.get('/users/:id',(req,res)=>{
+
+  var id = req.params.id;
+// Validating id
+
+if(!ObjectID.isValid(id)){
+  return res.status(400).send();
+}
+
+Users.findById(id).then((user)=>{
+  if(!user){
+    return res.status(404).send();
+  }
+  res.send({user});
+}).catch(()=>res.status(400).send());
+});
+
+
+// Deleting users based on id
+
+app.delete('/delete/:id',(req,res)=>{
+  var id = req.params.id;
+if(!ObjectID.isValid(id)){
+  return res.status(404).send();
+}
+    Users.findByIdAndRemove(id).then((doc)=>{
+
+    if(!doc){
+      return res.status(404).send();
+    }
+res.send(doc);
+  }).catch(()=>res.status(400).send());
+});
 
 
 //Setup listen port
-app.listen(3000,()=>{
-  console.log('Server is up on port number 3000');
+app.listen(port,()=>{
+  console.log(`Server started up port : ${port}`);
 });
 
 module.exports = {app};
