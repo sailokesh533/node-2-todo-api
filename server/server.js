@@ -1,6 +1,8 @@
 //Outside Imports
-var express =  require('express');
-var bodyParser = require('body-parser');
+
+const _ = require('lodash');
+const express =  require('express');
+const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
 
 //Local Imports
@@ -103,6 +105,33 @@ if(!ObjectID.isValid(id)){
     }
 res.send(doc);
   }).catch(()=>res.status(400).send());
+});
+
+app.patch('/patch/:id',(req,res)=>{
+  var userId =  req.params.id;
+  var body = _.pick(req.body,['user_name','age']);
+
+  if(!ObjectID.isValid(userId)){
+    return res.status(404).send();
+  }
+  if(_.isLength(body.user_name)<4){
+    body.user_name ="Sai Lokesh Kanthi";
+    if(_.lt(body.age,22)){
+      body.age = 28;
+    }
+
+
+  }
+
+
+Users.findByIdAndUpdate(userId,{$set:body},{new:true}).then((doc)=>{
+  if(!doc){
+    return res.status(404).send();
+  }
+  res.send({doc});
+}).catch((e)=>{
+  return res.status(404).send();
+});
 });
 
 

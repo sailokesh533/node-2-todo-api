@@ -7,12 +7,10 @@ var Users = mongoose.model('Users',{
     minlength:4,
     trim:true,
     type:String
+  },
+  age:{
+    type:Number
   }
-  // user_id:{
-  //   required:true,
-  //   minlength:1,
-  //   type:Number
-  // }
 });
 
 
