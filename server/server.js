@@ -1,3 +1,5 @@
+require('./config/config');
+
 //Outside Imports
 
 const _ = require('lodash');
@@ -13,7 +15,7 @@ var {Users} = require('./models/users');
 
 var app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 //Middleware setup
 
@@ -114,13 +116,8 @@ app.patch('/patch/:id',(req,res)=>{
   if(!ObjectID.isValid(userId)){
     return res.status(404).send();
   }
-  if(_.isLength(body.user_name)<4){
+  if(_.isLength(body.user_name)>4){
     body.user_name ="Sai Lokesh Kanthi";
-    if(_.lt(body.age,22)){
-      body.age = 28;
-    }
-
-
   }
 
 

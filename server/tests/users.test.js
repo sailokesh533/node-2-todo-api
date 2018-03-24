@@ -105,3 +105,23 @@ it('should test 404 delete by id',(done)=>{
   .end(done)
 });
 });
+
+describe('Patch /patch:id',()=>{
+it('should be test update user by id',(done)=>{
+var hexId = user_objects[0]._id.toHexString();
+var userName = "Hubby Kaaju";
+
+request(app)
+.patch(`/patch/${hexId}`)
+.send({
+userName
+})
+.expect(200)
+.expect((res)=>{
+  expect(res.body.user_name).toBe(userName);
+//  expect(res.body.age).toBeA('number');
+})
+.end(done);
+
+  });
+});
