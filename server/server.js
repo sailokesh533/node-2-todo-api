@@ -11,6 +11,7 @@ const {ObjectID} = require('mongodb');
 var {mongoose} = require('./db/mongoose');
 var {Employee} = require('./models/employee');
 var {Users} = require('./models/users');
+var {authenticate} = require('./middleware/authenticate');
 
 
 var app = express();
@@ -144,6 +145,12 @@ user.save().then(()=>{
   res.status(404).send(e);
 });
 
+});
+
+
+
+app.get('/userToken',authenticate,(req,res)=>{
+  res.send(req.user);
 });
 
 //Setup listen port

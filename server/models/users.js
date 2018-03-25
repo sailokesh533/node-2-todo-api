@@ -33,9 +33,7 @@ var UserShema =  new mongoose.Schema({
       type:String,
       required:true
     }
-  }
-
-  ]
+  }]
 });
 
 UserShema.methods.toJSON =  function(){
@@ -55,6 +53,25 @@ UserShema.methods.generateAuthToken = function(){
     return token;
   });
 };
+
+UserShema.statics.findByToken =  function(token){
+var Users = this;
+var decode;
+
+try{
+  decode = jwt.verify(token,'abc123');
+console.log('try');
+} catch(e){
+  console.log('catch');
+  return Promise.reject();
+}
+return Users.findOne({
+  '_id':decode._id,
+  'tokens.token':token,
+  'tokens.access':'auth'
+});
+};
+
 var Users = mongoose.model('Users',UserShema);
 
 
