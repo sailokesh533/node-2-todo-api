@@ -50,20 +50,20 @@ app.get('/employee',(req,res)=>{
 });
 
 
-app.post('/users',(req,res)=>{
-  var user = new Users({
-    user_name:req.body.user_name,
-    user_id:req.body.user_id
-  });
-
-  user.save().then((doc1)=>{
-    res.send(doc1);
-    console.log('Record is saved in database');
-  },(err)=>{
-    res.status(400).send(err);
-    console.log('Unable to save user data');
-  });
-});
+// app.post('/users',(req,res)=>{
+//   var user = new Users({
+//     user_name:req.body.user_name,
+//     user_id:req.body.user_id
+//   });
+//
+//   user.save().then((doc1)=>{
+//     res.send(doc1);
+//     console.log('Record is saved in database');
+//   },(err)=>{
+//     res.status(400).send(err);
+//     console.log('Unable to save user data');
+//   });
+// });
 
 app.get('/users',(req,res)=>{
   Users.find().then((doc)=>{
@@ -131,6 +131,20 @@ Users.findByIdAndUpdate(userId,{$set:body},{new:true}).then((doc)=>{
 });
 });
 
+
+app.post('/users',(req,res)=>{
+var body = _.pick(req.body,['user_name','email','password']);
+var user = new Users(body);
+
+user.save().then(()=>{
+  return user.generateAuthToken();
+}).then((token)=>{
+  res.header('x-auth',token).send(user);
+}).catch((e)=>{
+  res.status(404).send(e);
+});
+
+});
 
 //Setup listen port
 app.listen(port,()=>{
